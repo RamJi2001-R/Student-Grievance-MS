@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import API from "../api/axios";
 import Navbar from "../components/Navbar";
 import "../App.css";
@@ -6,15 +7,16 @@ import "../App.css";
 export default function Dashboard () {
   const [data, setData] = useState([]);
   const [form, setForm] = useState({});
-
-  const fetchData = async () => {
-    const res = await API.get("/grievances");
-    setData(res.data);
-  };
+  const navigate = useNavigate();
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+      return;
+    }
     fetchData();
-  }, []);
+  }, [navigate]);
 
   const submit = async (e) => {
     e.preventDefault();
