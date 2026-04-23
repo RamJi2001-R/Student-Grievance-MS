@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import API from "../api/axios";
 import { useNavigate, Link } from "react-router-dom";
 import "../App.css";
@@ -6,6 +6,11 @@ import "../App.css";
 export default function Login() {
   const [form, setForm] = useState({});
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Clear any existing token to force manual login
+    localStorage.removeItem("token");
+  }, []);
 
   const submit = async (e) => {
     e.preventDefault();
