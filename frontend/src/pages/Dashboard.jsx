@@ -18,6 +18,20 @@ export default function Dashboard () {
     fetchData();
   }, [navigate]);
 
+  const fetchData = async () => {
+    try {
+      const res = await API.get("/grievances");
+      setData(res.data);
+    } catch (error) {
+      console.error("Failed to fetch grievances:", error.response?.data || error.message);
+      alert("Failed to load grievances. Please check your connection or login again.");
+      if (error.response?.status === 401) {
+        localStorage.removeItem("token");
+        navigate("/login");
+      }
+    }
+  };
+
   const submit = async (e) => {
     e.preventDefault();
 
